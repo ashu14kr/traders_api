@@ -1,5 +1,8 @@
-# Stage 1: Build the application using Maven
-FROM maven:3.8.4-openjdk-21-slim AS build
+# Stage 1: Build the application using Maven with OpenJDK 21
+FROM openjdk:21-slim AS build
+
+# Install Maven in the build stage
+RUN apt-get update && apt-get install -y maven
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -11,8 +14,8 @@ COPY src ./src
 # Build the application using Maven
 RUN mvn clean package -DskipTests
 
-# Stage 2: Run the application
-FROM openjdk:21-jdk-slim
+# Stage 2: Run the application with OpenJDK 21
+FROM openjdk:21-slim
 
 # Expose the port the app will run on
 EXPOSE 8080
